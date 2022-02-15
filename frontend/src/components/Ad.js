@@ -1,17 +1,22 @@
 import {useState} from "react";
 import {Button, Modal} from "react-bootstrap";
-import Footer from "./Footer";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
+import {DISMISS_AD} from "../constants/adConstants";
+import {dismissAd} from "../actions/adActions";
 
 const Ad = () => {
+    const dispatch = useDispatch();
     const [show, setShow] = useState(false);
     const ad = useSelector((state) => state.adInfo);
-    const handleClose = () => setShow(false);
+    const handleClose = () => {
+        dispatch(dismissAd());
+        setShow(false);
+    }
     const handleShow = () => setShow(true);
 
     return (
 
-        <Modal show={ad?.name ? true : false} onHide={handleClose}>
+        <Modal show={!!ad?.show} onHide={handleClose}>
             <Modal.Header closeButton>
                 <Modal.Title>{ad.name}</Modal.Title>
             </Modal.Header>

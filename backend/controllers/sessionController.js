@@ -1,11 +1,45 @@
-const UNKNOWN_SESSIONS_ROOM = `UNKNOWN_SESSIONS`;
-const initConnection = (io) => {
-    io.on("connection", (socket) => {
+import {Agenda} from "agenda/es.js";
+import {db_url} from "../config/db_url.js";
+import {_io} from "../server.js";
+import Ad from "../models/adModel.js";
+const agenda = new Agenda({db: {address: db_url}})
+const initConnection = () => {
+    _io.on("connection", (socket) => {
         console.info(`user connected to server!`);
-        socket.join(UNKNOWN_SESSIONS_ROOM);
-        setTimeout(() => socket.emit(`AdClientUpdates`, {name: 'bond', image: 'https://image.shutterstock.com/shutterstock/photos/1427946731/display_1500/stock-vector-pepperoni-pizza-ads-with-delicious-ingredients-on-kraft-paper-background-in-d-illustration-1427946731.jpg'}), 2000);
-
+        const sessionId = socket.id;
+        agenda.define(
+            sessionId,
+            {priority: 10},
+            newAdLoop
+        )
+        agenda.every("30 seconds", sessionId);
+        socket.on(`disconnect`, () => {
+            agenda.cancel({name: sessionId});
+            console.log(`user disconnected`);
+        })
     })
 };
-const connectedSessions = new Map()
+(async function () {
+    await agenda.start();
+    await agenda.purge();
+})();
+const newAdLoop = async (job) => {
+    const socket = await _io.sockets.sockets.get(job.attrs.name);
+    const count = await Ad.count();
+    let random = Math.floor(Math.random() * count);
+    const chosenAd = await Ad.findOne().skip(random).exec();
+    console.log(chosenAd)
+    socket.emit(`AdClientUpdates`, chosenAd);
+
+    console.log(job);
+}
+/*
+const task = new ('name', () => {
+    return async () => {
+        const count = await Ad.count();
+        let random = Math.floor(Math.random() * count);
+        const chosenAd = await Ad.findOne().skip(random).exec();
+
+    }
+})*/
 export {initConnection};

@@ -11,7 +11,7 @@ import productRoutes from './routes/productRoutes.js'
 import userRoutes from './routes/userRoutes.js'
 import orderRoutes from './routes/orderRoutes.js'
 import uploadRoutes from './routes/uploadRoutes.js'
-import {initConnection} from "./controllers/sessionController.js";
+import { initConnection} from "./controllers/sessionController.js";
 import cors from 'cors';
 
 dotenv.config()
@@ -22,12 +22,12 @@ const app = express()
 app.use(morgan('dev'));
 app.use(express.json())
 const httpServer = createServer(app);
-const io = new Server(httpServer, {
+export const _io = new Server(httpServer, {
     cors: {
         origin: "*"
     }
 });
-initConnection(io);
+initConnection();
 app.use('/api/products', productRoutes)
 app.use('/api/users', userRoutes)
 app.use('/api/orders', orderRoutes)
