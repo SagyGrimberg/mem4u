@@ -340,7 +340,7 @@ const ProfileScreen = ({ history }) => {
                         {!order.isPaid && (
                           <i
                             className='fas fa-trash-alt'
-                            style={{ color: '#AAAAAA' }}
+                            style={{ color: '#1b3a56' }}
                             onClick={() =>
                               dispatch(deleteOrder(order._id, order.user))
                             }
