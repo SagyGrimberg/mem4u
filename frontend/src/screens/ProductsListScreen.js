@@ -70,7 +70,7 @@ const ProductsListScreen = ({ history, match }) => {
       </Helmet>
       <Row className='align-items-center'>
         <Col>
-          <h1 style={{ color: '#AAAAAA' }}>רשימת מוצרים</h1>
+          <h1 style={{ color: '#1b3a56' }}>רשימת מוצרים</h1>
         </Col>
         <Col className='text-left'>
           <Button className='my-3 btn btn-brand' onClick={createProductHandler}>
@@ -146,7 +146,7 @@ const ProductsListScreen = ({ history, match }) => {
                 hover
                 responsive
                 className='table-sm'
-                style={{ color: '#AAAAAA' }}
+                style={{ color: '#1b3a56' }}
               >
                 <thead>
                   <tr style={{ textAlign: 'center' }}>
