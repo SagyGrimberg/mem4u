@@ -60,6 +60,7 @@ const UserEditScreen = ({ match, history }) => {
         setName(user.name)
         setEmail(user.email)
         setIsAdmin(user.isAdmin)
+        setFrequency(user.adOptions.frequency)
       }
     }
   }, [userInfo, dispatch, history, success, user, userId])
@@ -73,7 +74,7 @@ const UserEditScreen = ({ match, history }) => {
         name,
         email,
         isAdmin,
-        frequecny: frequency
+        frequency: frequency
       })
     )
   }
@@ -360,7 +361,7 @@ const UserEditScreen = ({ match, history }) => {
                   <Form.Control
                       type=''
                       label='תדירות באנגלית לדוג 5 min'
-                      checked={isAdmin}
+                      value={frequency}
                       onChange={(e) => setFrequency(e.target.value)}
                   ></Form.Control>
                 </Form.Group>
