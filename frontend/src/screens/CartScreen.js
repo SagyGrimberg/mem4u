@@ -67,7 +67,7 @@ const CartScreen = ({ match, location, history }) => {
       )}
       <Row className='mt-4'>
         <Col md={8}>
-          <h1 style={{ color: '#AAAAAA' }}>עגלת קניות</h1>
+          <h1 style={{ color: '#1b3a56' }}>עגלת קניות</h1>
           {cartItems.length === 0 ? (
             <>
               <Message variant='brand' dismissible={false}>
@@ -165,7 +165,7 @@ const CartScreen = ({ match, location, history }) => {
                       )}{' '}
                       מוצרים
                     </h2>
-                    <h1 style={{ color: '#AAAAAA' }}>
+                    <h1 style={{ color: '#1b3a56' }}>
                       {cartItems
                         .reduce((acc, item) => acc + item.qty * item.price, 0)
                         .toLocaleString('he-IL')}{' '}
