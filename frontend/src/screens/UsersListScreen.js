@@ -42,7 +42,7 @@ const UsersListScreen = ({ history }) => {
       <Helmet>
         <title>רשימת משתמשים</title>
       </Helmet>
-      <h1 style={{ color: '#AAAAAA' }}>רשימת משתמשים</h1>
+      <h1 style={{ color: '#1b3a56' }}>רשימת משתמשים</h1>
       {loading ? (
         <Spinner />
       ) : (
@@ -82,7 +82,7 @@ const UsersListScreen = ({ history }) => {
               hover
               responsive
               className='table-sm'
-              style={{ color: '#AAAAAA' }}
+              style={{ color: '#1b3a56' }}
             >
               <thead>
                 <tr style={{ textAlign: 'center' }}>
@@ -105,7 +105,7 @@ const UsersListScreen = ({ history }) => {
                       <td className='hide-sm'>
                         <a
                           href={`mailto:${user.email}`}
-                          style={{ color: '#AAAAAA' }}
+                          style={{ color: '#1b3a56' }}
                         >
                           {user.email}
                         </a>
@@ -162,7 +162,7 @@ const UsersListScreen = ({ history }) => {
                             <i
                               className='fas fa-trash-alt'
                               style={{
-                                color: '#AAAAAA',
+                                color: '#1b3a56',
                                 marginRight: '1.5rem',
                                 verticalAlign: 'middle',
                                 cursor: 'not-allowed',
