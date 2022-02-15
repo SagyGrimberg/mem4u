@@ -19,21 +19,12 @@ import UsersListScreen from './screens/UsersListScreen'
 import UserEditScreen from './screens/UserEditScreen'
 import ProductEditScreen from './screens/ProductEditScreen'
 import Ad from './components/Ad'
-import {useEffect} from "react";
-import {io} from "socket.io-client";
 import {useDispatch} from "react-redux";
-import {updateAdFromSocket} from "./actions/adActions";
-
-const ENDPOINT = "http://127.0.0.1:5000";
-const socket = io(ENDPOINT);
+import {initEventListening} from "./actions/socketIoActions";
 
 const App = () => {
-    const dispatch = useDispatch()
-    useEffect(() => {
-        socket.on(`AdClientUpdates`, (data) => {
-            dispatch(updateAdFromSocket(data));
-        })
-    })
+    const dispatch = useDispatch();
+    dispatch(initEventListening())
     return (
         <Router>
             <Header/>

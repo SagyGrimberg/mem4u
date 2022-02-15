@@ -37,6 +37,10 @@ const userSchema = mongoose.Schema(
       postalCode: { type: String, default: '' },
       phoneNumber: { type: String, default: '' },
     },
+      adOptions: {
+          frequency: {type: String, default: '5 min'},
+          showAds: {type: Boolean, default: true}
+      }
   },
   {
     timestamps: true,
