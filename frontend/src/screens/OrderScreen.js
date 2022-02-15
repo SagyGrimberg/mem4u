@@ -126,7 +126,7 @@ const OrderScreen = ({ history, match }) => {
         </Message>
       ) : (
         <>
-          <h1 style={{ color: '#AAAAAA' }}>
+          <h1 style={{ color: '#1b3a56' }}>
             הזמנה מספר {order._id.slice(17, 24)}
           </h1>
           <Row>
