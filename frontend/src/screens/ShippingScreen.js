@@ -66,7 +66,7 @@ const ShippingScreen = ({ history }) => {
         step4={shippingAddress !== null && shippingAddress.address}
       />
       <FormContainer>
-        <h1 className='mb-n3' style={{ color: '#AAAAAA' }}>
+        <h1 className='mb-n3' style={{ color: '#1b3a56' }}>
           כתובת למשלוח
         </h1>
         <small>* שדות חובה</small>
