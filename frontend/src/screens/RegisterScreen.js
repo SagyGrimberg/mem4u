@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react'
+import React, {useState} from 'react'
 import {Link} from 'react-router-dom'
 import {Button, Col, Form, Row} from 'react-bootstrap'
 import {useDispatch, useSelector} from 'react-redux'
@@ -6,46 +6,22 @@ import {Helmet} from 'react-helmet'
 import Message from '../components/Message'
 import FormContainer from '../components/FormContainer'
 import Spinner from '../components/layout/Spinner'
-import {login, register} from '../actions/userActions'
+import {register} from '../actions/userActions'
 
-const RegisterScreen = ({location, history}) => {
+const RegisterScreen = ({location}) => {
     const [name, setName] = useState('')
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [confirmPassword, setConfirmPassword] = useState('')
     const [message, setMessage] = useState(null)
-    const [loginSuccess, setLoginSuccess] = useState(false)
+    const [loginSuccess] = useState(false)
 
     const dispatch = useDispatch()
 
     const userRegister = useSelector((state) => state.userRegister)
     const {loading, error} = userRegister
 
-    const userLogin = useSelector((state) => state.userLogin)
-    const {userInfo} = userLogin
-
     const redirect = location.search ? location.search.split('=')[1] : '/'
-
-    useEffect(() => {
-        if (userInfo) {
-            history.push(redirect)
-        }
-
-        if (error === 'המשתמש קיים' && googleEmail !== '') {
-            setLoginSuccess(true)
-            dispatch(login(googleEmail, googleId))
-            history.push('/')
-        }
-    }, [
-        history,
-        userInfo,
-        redirect,
-        error,
-        email,
-        dispatch,
-        googleEmail,
-        googleId,
-    ])
 
     const submitHandler = (e) => {
         e.preventDefault()

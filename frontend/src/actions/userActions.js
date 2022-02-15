@@ -34,6 +34,7 @@ import {
   USER_UPDATE_FAIL,
   USER_UPDATE_HIDE_MESSAGE,
 } from '../constants/userConstants'
+import {logoffSocketIO, updateAdOptions} from "./socketIoActions";
 
 export const login = (email, password) => async (dispatch) => {
   try {
@@ -57,7 +58,7 @@ export const login = (email, password) => async (dispatch) => {
       type: USER_LOGIN_SUCCESS,
       payload: data,
     })
-
+    dispatch(updateAdOptions());
     localStorage.setItem('userInfo', JSON.stringify(data))
 
     if (data.isAdmin) {
@@ -75,9 +76,12 @@ export const login = (email, password) => async (dispatch) => {
   }
 }
 
-export const logout = () => (dispatch) => {
+export const logout = () => (dispatch, getState) => {
   localStorage.removeItem('userInfo')
-
+  const {
+    userLogin: {userInfo},
+  } = getState();
+  dispatch(logoffSocketIO(userInfo));
   dispatch({ type: USER_LOGOUT })
   dispatch({ type: ORDER_LIST_MY_RESET })
   dispatch({ type: CART_CLEAR_SHIPPING_ADDRESS })

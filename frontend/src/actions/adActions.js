@@ -1,8 +1,9 @@
 import {DISMISS_AD, SET_CURRENT_AD} from "../constants/adConstants";
 
 export const updateAdFromSocket = (ad) => (
-    dispatch,
+    dispatch
 ) => {
+
     dispatch({
         type: SET_CURRENT_AD,
         payload: {
