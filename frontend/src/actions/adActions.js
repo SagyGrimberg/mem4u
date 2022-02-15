@@ -1,4 +1,4 @@
-import {SET_CURRENT_AD} from "../constants/adConstants";
+import {DISMISS_AD, SET_CURRENT_AD} from "../constants/adConstants";
 
 export const updateAdFromSocket = (ad) => (
     dispatch,
@@ -11,3 +11,8 @@ export const updateAdFromSocket = (ad) => (
         }
     });
 };
+export const dismissAd = () => (dispatch) => {
+    dispatch({
+        type: DISMISS_AD
+    })
+}
