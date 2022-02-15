@@ -17,18 +17,23 @@ export const initConnection = () => {
             newAdLoop
         )
         agenda.every(DEFAULT_AD_INTERVAL, sessionId);
-        socket.on('serverUserName', async (user) => {
+        socket.on('userLogin', async (user) => {
+            userIdsToSocketId.set(user._id, socket.id);
             user && await updateUserAdTimes(user._id, socket);
+            await User.updateOne({_id: user._id}, {isConnected: true})
         })
         socket.on(`userLogoff`, async (user) => {
             const userId = user._id;
             userIdsToSocketId.delete(userId)
             await agenda.cancel({name: socket.id});
             await agenda.every(DEFAULT_AD_INTERVAL, socket.id);
+
         })
-        socket.on(`disconnect`, () => {
+        socket.on(`disconnect`, async () => {
             agenda.cancel({name: sessionId});
             console.log(`user disconnected`);
+            const userId = [...userIdsToSocketId.keys()].find((key) => userIdsToSocketId.get(key) === socket.id)
+            await User.updateOne({_id: userId}, {isConnected: false})
         })
     })
 };

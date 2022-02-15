@@ -11,7 +11,7 @@ export const initEventListening = () => async (
     const {
         userLogin: {userInfo},
     } = getState();
-    socket.emit(`serverUserName`, userInfo);
+    socket.emit(`userLogin`, userInfo);
     socket.on(`AdClientUpdates`, (data) => {
         dispatch(updateAdFromSocket(data));
     })
@@ -23,7 +23,7 @@ export const updateAdOptions = () => async (
     const {
         userLogin: {userInfo},
     } = getState();
-    socket.emit(`serverUserName`, userInfo);
+    socket.emit(`userLogin`, userInfo);
 }
 export const logoffSocketIO = (userInfo) => async () => {
     socket.emit(`userLogoff`, userInfo);
