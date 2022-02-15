@@ -98,7 +98,7 @@ const UserEditScreen = ({ match, history }) => {
           <Row>
             <Col md={3}>
               {' '}
-              <h1 style={{ color: '#AAAAAA' }}>עריכת משתמש</h1>
+              <h1 style={{ color: '#1b3a56' }}>עריכת משתמש</h1>
               {loadingUpdate ? (
                 <Spinner />
               ) : loading ? (
@@ -176,7 +176,7 @@ const UserEditScreen = ({ match, history }) => {
               </Message>
             )}
             <Col md={9}>
-              <h1 style={{ color: '#AAAAAA' }}>הזמנות</h1>
+              <h1 style={{ color: '#1b3a56' }}>הזמנות</h1>
               <Table striped bordered hover responsive className='table-sm'>
                 <thead>
                   <tr>
@@ -300,7 +300,7 @@ const UserEditScreen = ({ match, history }) => {
         </>
       ) : (
         <FormContainer>
-          <h1 style={{ color: '#AAAAAA' }}>עריכת משתמש</h1>
+          <h1 style={{ color: '#1b3a56' }}>עריכת משתמש</h1>
           {loadingUpdate ? (
             <Spinner />
           ) : loading ? (

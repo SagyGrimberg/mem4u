@@ -55,7 +55,7 @@ const OrdersListScreen = ({ history }) => {
       <Helmet>
         <title>רשימת הזמנות</title>
       </Helmet>
-      <h1 style={{ color: '#AAAAAA' }}>רשימת הזמנות</h1>
+      <h1 style={{ color: '#1b3a56' }}>רשימת הזמנות</h1>
 
       {loading ? (
         <Spinner />
@@ -102,7 +102,7 @@ const OrdersListScreen = ({ history }) => {
               hover
               responsive
               className='table-sm'
-              style={{ color: '#AAAAAA' }}
+              style={{ color: '#1b3a56' }}
             >
               <thead>
                 <tr style={{ textAlign: 'center' }}>
@@ -272,7 +272,7 @@ const OrdersListScreen = ({ history }) => {
                             <i
                               className='fas fa-trash-alt'
                               style={{
-                                color: '#AAAAAA',
+                                color: '#1b3a56',
                                 cursor: 'not-allowed',
                               }}
                             ></i>

@@ -43,13 +43,13 @@ const HomeScreen = ({ match, history }) => {
         <>
           <ListGroup>
             <ListGroup.Item className='pb-5 list-group-home list-group-home-md list-group-home-sm hide-sm'>
-              <h1 className='mr-5' style={{ color: '#53dbb2' }}>
+              <h1 className='mr-5' style={{ color: '#1b3a56' }}>
                 המוצרים החמים
               </h1>
               <ProductCarousel />
             </ListGroup.Item>
           </ListGroup>
-          <h3 className='mb-n3 mt-4' style={{ color: '#53dbb2' }}>
+          <h3 className='mb-n3 mt-4' style={{ color: '#1b3a56' }}>
             כל המוצרים
           </h3>
         </>
@@ -83,7 +83,7 @@ const HomeScreen = ({ match, history }) => {
                 <h3 className='mr-3'>
                   לא נמצאו מוצרים.{' '}
                   <span
-                    style={{ color: '#AAAAAA' }}
+                    style={{ color: '#1b3a56' }}
                     className='link'
                     onClick={() => history.push('/')}
                   >
