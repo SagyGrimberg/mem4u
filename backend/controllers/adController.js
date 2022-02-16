@@ -17,6 +17,7 @@ export const updateAd = asyncHandler(async (req, res) => {
     const {
         name,
         image,
+        showAd
     } = req.body
 
     const ad = await Ad.findById(req.params.id)
@@ -24,6 +25,7 @@ export const updateAd = asyncHandler(async (req, res) => {
     if (ad) {
         ad.name = name
         ad.image = image
+        ad.showAd = showAd
 
         const updateAd = await ad.save()
 
