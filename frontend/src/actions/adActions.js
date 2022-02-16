@@ -16,6 +16,7 @@ import {
     AD_UPDATE_FAIL,
     AD_UPDATE_HIDE_MESSAGE,
     AD_UPDATE_REQUEST,
+    AD_UPDATE_RESET,
     AD_UPDATE_SUCCESS,
     DISMISS_AD,
     SET_CURRENT_AD
@@ -93,6 +94,10 @@ export const createAd = () => async (dispatch, getState) => {
             type: AD_CREATE_SUCCESS,
             payload: data,
         })
+        dispatch({
+            type: AD_DETAILS_SUCCESS,
+            payload: data
+        })
     } catch (err) {
         dispatch({
             type: AD_CREATE_FAIL,
@@ -103,6 +108,24 @@ export const createAd = () => async (dispatch, getState) => {
         })
     }
 }
+export const updateExisingAd = (ad) => async (dispatch) => {
+    dispatch({
+        type: AD_UPDATE_RESET
+    })
+    dispatch({
+        type: AD_CREATE_REQUEST,
+    })
+
+    dispatch({
+        type: AD_CREATE_SUCCESS,
+        payload: {...ad},
+    })
+    dispatch({
+        type: AD_DETAILS_SUCCESS,
+        payload: {...ad}
+    })
+}
+
 export const listAdDetails = (id) => async (dispatch) => {
     try {
         dispatch({type: AD_DETAILS_REQUEST})
