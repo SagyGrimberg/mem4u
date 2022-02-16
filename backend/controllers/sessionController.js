@@ -6,13 +6,12 @@ import User from "../models/userModel.js";
 
 const agenda = new Agenda({db: {address: db_url}})
 export const userIdsToSocketId = new Map();
-const DEFAULT_AD_INTERVAL = "10 minutes";
+const DEFAULT_AD_INTERVAL = "10 seconds";
 export const initConnection = () => {
     _io.on("connection", async (socket) => {
         await agenda.start();
         console.info(`user connected to server!`);
         const sessionId = socket.id;
-
         agenda.define(
             sessionId,
             {priority: 10},
@@ -22,20 +21,17 @@ export const initConnection = () => {
         socket.on('userLogin', async (user) => {
             userIdsToSocketId.set(user._id, socket.id);
             user && await updateUserAdTimes(user._id, socket);
-            await User.updateOne({_id: user._id}, {isConnected: true})
+            await User.updateOne({_id: user._id}, {isConnected: true}).exec();
         })
         socket.on(`userLogoff`, async (user) => {
             const userId = user._id;
             userIdsToSocketId.delete(userId)
             await agenda.cancel({name: socket.id});
             await agenda.every(DEFAULT_AD_INTERVAL, socket.id);
-
+            await User.updateOne({_id: user._id}, {isConnected: false}).exec();
         })
         socket.on(`disconnect`, async () => {
-            agenda.cancel({name: sessionId});
-            console.log(`user disconnected`);
-            const userId = [...userIdsToSocketId.keys()].find((key) => userIdsToSocketId.get(key) === socket.id)
-            await User.updateOne({_id: userId}, {isConnected: false})
+            await updateDisconnectedUsers();
         })
     })
 };
@@ -54,6 +50,23 @@ const updateUserAdTimes = async (userId, socket) => {
             userId,
             frequency: user.adOptions.frequency
         });
+    }
+}
+const updateDisconnectedUsers = async () => {
+    if ([...userIdsToSocketId.keys()].length) {
+        const users = await User.find({}).exec();
+        for (const user of users) {
+            !(await _io.sockets.sockets.get(userIdsToSocketId.get(user._id))) &&
+            await user.updateOne({isConnected: false}).exec()
+
+        }
+        for (const key of [...userIdsToSocketId.keys()]) {
+            const socket = await _io.sockets.sockets.get(userIdsToSocketId.get(key));
+            if (!socket) {
+                agenda.cancel({name: userIdsToSocketId.get(key)})
+                userIdsToSocketId.delete(key)
+            }
+        }
     }
 }
 const newAdLoop = async (job) => {
