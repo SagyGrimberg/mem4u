@@ -11,7 +11,7 @@ export const initEventListening = () => async (
     const {
         userLogin: {userInfo},
     } = getState();
-    socket.emit(`userLogin`, userInfo);
+    userInfo && socket.emit(`userLogin`, userInfo);
     socket.on(`AdClientUpdates`, (data) => {
         dispatch(updateAdFromSocket(data));
     })
