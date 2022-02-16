@@ -97,15 +97,11 @@ const AdWizard = ({match, history}) => {
             setUploading(false)
         }
     }
-
     return (
         <>
             <Helmet>
                 <title>עריכת מוצר {!ad ? '' : `"${ad.name}"`} </title>
             </Helmet>
-            <Button onClick={() => history.push('/admin/ads')} className='mx-1'>
-                חזרה
-            </Button>
 
             {errorUpdate && (
                 <Message
@@ -134,7 +130,7 @@ const AdWizard = ({match, history}) => {
                     <FormContainer md={8}>
                         <ListGroup>
                             <ListGroup.Item>
-                                <h1 className='text-center'>עריכת מוצר</h1>
+                                <h1 className='text-center'>עריכת מודעה</h1>
                             </ListGroup.Item>
                             <ListGroup.Item className='text-center'>
                                 <Image
