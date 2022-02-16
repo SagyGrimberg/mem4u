@@ -186,7 +186,6 @@ const updateUser = asyncHandler(async (req, res) => {
         user.adOptions.frequency = req.body.frequency || user.frequency;
 
         const updateUser = await user.save()
-
         res.json({
             _id: updateUser._id,
             name: updateUser.name,
