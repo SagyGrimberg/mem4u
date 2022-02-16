@@ -8,6 +8,11 @@ const adSchema = mongoose.Schema({
         image: {
             type: mongoose.Schema.Types.String,
             required: false,
+        },
+        showAd: {
+            type: mongoose.Schema.Types.Boolean,
+            required: true,
+            default: false
         }
     },
     {timestamps: true}
