@@ -124,6 +124,19 @@ const UsersListScreen = ({history}) => {
                           />
                         )}
                       </td>
+                        <td>
+                            {user.isConnected ? (
+                                <i
+                                    className='fas fa-check'
+                                    style={{color: '#3fa63f'}}
+                                />
+                            ) : (
+                                <i
+                                    className='fas fa-minus'
+                                    style={{color: '#e9352f'}}
+                                />
+                            )}
+                        </td>
                       <td>
                         {user.hasOrders && (
                           <i
