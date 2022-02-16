@@ -25,8 +25,8 @@ const authUser = asyncHandler(async (req, res) => {
             throw new Error('אימייל או סיסמה לא נכונים')
         }
     } catch (error) {
-        console.error(`failed to login`);
-        res.status(500);
+        res.status(401);
+        throw new Error(`המשתמש לא קיים`)
     }
 })
 
