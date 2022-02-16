@@ -5,7 +5,7 @@ import {Helmet} from 'react-helmet'
 import Message from '../components/Message'
 import Paginate from '../components/Paginate'
 import Spinner from '../components/layout/Spinner'
-import {createAd, listAds} from "../actions/adActions";
+import {createAd, listAds, updateExisingAd} from "../actions/adActions";
 import {AD_CREATE_RESET} from "../constants/adConstants";
 
 const AdManagementScreen = ({history, match}) => {
@@ -18,7 +18,7 @@ const AdManagementScreen = ({history, match}) => {
     const adList = useSelector((state) => state.adList)
     const {loading, error, ads, message, pages, page} = adList
 
-    const productUpdate = useSelector((state) => state.productUpdate)
+    const adUpdate = useSelector((state) => state.adUpdate)
 
     const adCreate = useSelector((state) => state.adCreate)
     const {
@@ -27,7 +27,7 @@ const AdManagementScreen = ({history, match}) => {
         error: errorCreate,
         success: successCreate,
     } = adCreate
-    const {error: errorUpdate, success} = productUpdate
+    const {error: errorUpdate, success} = adUpdate
     useEffect(() => {
         dispatch({type: AD_CREATE_RESET})
         if (!userInfo || (userInfo && !userInfo.isAdmin)) {
@@ -42,6 +42,9 @@ const AdManagementScreen = ({history, match}) => {
     }, [dispatch, userInfo, history, successCreate, createdAd])
     const createAdHandler = () => {
         dispatch(createAd())
+    }
+    const updateAdHandler = (ad) => {
+        dispatch(updateExisingAd(ad));
     }
     return (
         <>
@@ -72,25 +75,6 @@ const AdManagementScreen = ({history, match}) => {
                         </Message>
                     )}
 
-                    {success && (
-                        <Message
-                            variant='success'
-                            dismissible={false}
-                            classN='alert-product-screen'
-                        >
-                            המוצר עודכן בהצלחה
-                        </Message>
-                    )}
-
-                    {/*{deleteError && (*/}
-                    {/*    <Message*/}
-                    {/*        variant='danger'*/}
-                    {/*        dismissible={true}*/}
-                    {/*        classN='alert-product-screen'*/}
-                    {/*    >*/}
-                    {/*        {deleteError}*/}
-                    {/*    </Message>*/}
-                    {/*)}*/}
 
                     {errorUpdate && (
                         <Message
@@ -102,7 +86,7 @@ const AdManagementScreen = ({history, match}) => {
                         </Message>
                     )}
 
-                    {/*errorCreate && (
+                    {errorCreate && (
                         <Message
                             variant='danger'
                             dismissible={true}
@@ -110,15 +94,13 @@ const AdManagementScreen = ({history, match}) => {
                         >
                             {errorCreate}
                         </Message>
-                    )}*/}
+                    )}
 
                     {error ? (
                         <Message variant='danger' dismissible={false}>
                             {error}
                         </Message>
-                    ) : /*loadingDelete ? (
-                        <Spinner/>
-                    ) :*/ (
+                    ) : (
                         <>
                             <Table
                                 striped
@@ -131,6 +113,7 @@ const AdManagementScreen = ({history, match}) => {
                                     <th>ID</th>
                                     <th>שם</th>
                                     <th>קישור לתמונה</th>
+                                    <th>עריכה</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -149,6 +132,9 @@ const AdManagementScreen = ({history, match}) => {
                                             <td
                                             >
                                                 {ad.image}
+                                            </td>
+                                            <td onClick={() => updateAdHandler(ad)}>
+                                                <i className="fas fa-pen product-link"></i>
                                             </td>
                                         </tr>
                                     ))}
