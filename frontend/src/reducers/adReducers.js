@@ -58,9 +58,9 @@ export const adListReducer = (state = {ads: []}, action) => {
 
     switch (type) {
         case AD_LIST_REQUEST:
-            return {loading: true}
+            return {...state, loading: true}
         case AD_LIST_SUCCESS:
-            return {loading: false, ads: payload}
+            return {...state, loading: false, ads: payload}
         case AD_DELETE_SUCCESS:
             return {
                 ...state,
@@ -74,9 +74,9 @@ export const adListReducer = (state = {ads: []}, action) => {
                 success: false,
             }
         case AD_LIST_FAIL:
-            return {loading: false, error: payload}
+            return {...state, loading: false, error: payload}
         case AD_LIST_RESET:
-            return {users: []}
+            return {...state, users: []}
         default:
             return state
     }
@@ -86,13 +86,13 @@ export const adCreateReducer = (state = {}, action) => {
 
     switch (type) {
         case AD_CREATE_REQUEST:
-            return {loading: true}
+            return {...state, loading: true}
         case AD_CREATE_SUCCESS:
-            return {loading: false, success: true, ad: payload}
+            return {...state, loading: false, success: true, ad: payload}
         case AD_CREATE_FAIL:
-            return {loading: false, error: payload}
+            return {...state, loading: false, error: payload}
         case AD_CREATE_RESET:
-            return {}
+            return {...state, ad: undefined, loading: undefined, success: undefined, error: undefined}
         default:
             return state
     }
@@ -136,7 +136,7 @@ export const adUpdateReducer = (state = {ad: {}}, action) => {
         case AD_UPDATE_REQUEST:
             return {loading: true}
         case AD_UPDATE_SUCCESS:
-            return {loading: false, success: true, ad: payload}
+            return {...state, loading: false, success: true, ad: payload}
         case AD_UPDATE_HIDE_MESSAGE:
             return {
                 ...state,
@@ -147,7 +147,10 @@ export const adUpdateReducer = (state = {ad: {}}, action) => {
         case AD_UPDATE_RESET:
             return {
                 ...state,
-                ad: {},
+                ad: undefined,
+                success: undefined,
+                error: undefined,
+                loading: undefined
             }
         default:
             return state
