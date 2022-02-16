@@ -50,11 +50,18 @@ const updateUserAdTimes = async (userId, socket) => {
 
     if (user?.adOptions?.frequency) {
         await agenda.cancel({name: socketId});
-        !user.isAdmin && await agenda.every(user.adOptions.frequency, socketId);
+        !user.isAdmin && await agenda.every(user.adOptions.frequency, socketId, {
+            userId,
+            frequency: user.adOptions.frequency
+        });
     }
 }
 const newAdLoop = async (job) => {
     const socket = await _io.sockets.sockets.get(job.attrs.name);
+    if (job?.attrs?.data.userId && job?.attrs?.data.frequency) {
+        const user = await User.findById(job.attrs.data.userId).exec();
+        user.adOptions.frequency !== job.attrs.data.frequency && await updateUserAdTimes(job?.attrs?.data.userId)
+    }
     const count = await Ad.count();
     let random = Math.floor(Math.random() * count);
     const chosenAd = await Ad.findOne().skip(random).exec();
