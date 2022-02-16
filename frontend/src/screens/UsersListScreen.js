@@ -1,41 +1,41 @@
-import React, { useEffect } from 'react'
-import { LinkContainer } from 'react-router-bootstrap'
-import { Table } from 'react-bootstrap'
-import { useDispatch, useSelector } from 'react-redux'
-import { Helmet } from 'react-helmet'
+import React, {useEffect} from 'react'
+import {LinkContainer} from 'react-router-bootstrap'
+import {Table} from 'react-bootstrap'
+import {useDispatch, useSelector} from 'react-redux'
+import {Helmet} from 'react-helmet'
 import Message from '../components/Message'
 import Spinner from '../components/layout/Spinner'
-import { listUsers, deleteUser } from '../actions/userActions'
+import {listUsers, deleteUser} from '../actions/userActions'
 
-const UsersListScreen = ({ history }) => {
-  const dispatch = useDispatch()
+const UsersListScreen = ({history}) => {
+    const dispatch = useDispatch()
 
-  const userLogin = useSelector((state) => state.userLogin)
-  const { userInfo } = userLogin
+    const userLogin = useSelector((state) => state.userLogin)
+    const {userInfo} = userLogin
 
-  const userList = useSelector((state) => state.userList)
-  const { loading, error, users, success } = userList
+    const userList = useSelector((state) => state.userList)
+    const {loading, error, users, success} = userList
 
-  const userDelete = useSelector((state) => state.userDelete)
-  const { error: deleteError } = userDelete
+    const userDelete = useSelector((state) => state.userDelete)
+    const {error: deleteError} = userDelete
 
-  const userUpdate = useSelector((state) => state.userUpdate)
-  const { success: successUpdate } = userUpdate
+    const userUpdate = useSelector((state) => state.userUpdate)
+    const {success: successUpdate} = userUpdate
 
-  useEffect(() => {
-    if (!userInfo || (userInfo && !userInfo.isAdmin)) {
-      history.push('/')
-      return
+    useEffect(() => {
+        if (!userInfo || (userInfo && !userInfo.isAdmin)) {
+            history.push('/')
+            return
+        }
+
+        dispatch(listUsers())
+    }, [dispatch, userInfo, history])
+
+    const deleteHandler = (id) => {
+        if (window.confirm('האם אתם בטוחים שברצונכם למחוק את המשתמש?')) {
+            dispatch(deleteUser(id))
+        }
     }
-
-    dispatch(listUsers())
-  }, [dispatch, userInfo, history])
-
-  const deleteHandler = (id) => {
-    if (window.confirm('האם אתם בטוחים שברצונכם למחוק את המשתמש?')) {
-      dispatch(deleteUser(id))
-    }
-  }
 
   return (
     <>
@@ -57,15 +57,15 @@ const UsersListScreen = ({ history }) => {
             </Message>
           )}
 
-          {successUpdate && (
-            <Message
-              variant='success'
-              dismissible={false}
-              classN='alert-user-list'
-            >
-              המשתמש עודכן בהצלחה
-            </Message>
-          )}
+                    {successUpdate && (
+                        <Message
+                            variant='success'
+                            dismissible={false}
+                            classN='alert-user-list'
+                        >
+                            המשתמש עודכן בהצלחה
+                        </Message>
+                    )}
 
           {error ? (
             <Message variant='danger' dismissible={false}>
@@ -90,6 +90,7 @@ const UsersListScreen = ({ history }) => {
                   <th>שם</th>
                   <th className='hide-sm'>דוא"ל</th>
                   <th>מנהל מערכת</th>
+                  <th>מחובר?</th>
                   <th>קיימות הזמנות</th>
                   <th>קיימת הזמנה משולמת</th>
                   <th>עריכת/מחיקת משתמש</th>
@@ -123,6 +124,19 @@ const UsersListScreen = ({ history }) => {
                           />
                         )}
                       </td>
+                        <td>
+                            {user.isConnected ? (
+                                <i
+                                    className='fas fa-check'
+                                    style={{color: '#3fa63f'}}
+                                />
+                            ) : (
+                                <i
+                                    className='fas fa-minus'
+                                    style={{color: '#e9352f'}}
+                                />
+                            )}
+                        </td>
                       <td>
                         {user.hasOrders && (
                           <i
@@ -169,17 +183,17 @@ const UsersListScreen = ({ history }) => {
                               }}
                             ></i>
                           </span>
-                        )}
-                      </td>
-                    </tr>
-                  ))}
-              </tbody>
-            </Table>
-          )}
+                                            )}
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </Table>
+                    )}
+                </>
+            )}
         </>
-      )}
-    </>
-  )
+    )
 }
 
 export default UsersListScreen

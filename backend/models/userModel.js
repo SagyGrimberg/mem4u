@@ -2,62 +2,63 @@ import mongoose from 'mongoose'
 import bcrypt from 'bcryptjs'
 
 const userSchema = mongoose.Schema(
-  {
-    name: {
-      type: String,
-      required: true,
+    {
+        name: {
+            type: String,
+            required: true,
+        },
+        email: {
+            type: String,
+            required: true,
+            unique: true,
+        },
+        password: {
+            type: String,
+            required: true,
+        },
+        isAdmin: {
+            type: Boolean,
+            required: true,
+            default: false,
+        },
+        hasPaidOrders: {
+            type: Boolean,
+            required: true,
+            default: false,
+        },
+        hasOrders: {
+            type: Boolean,
+            required: true,
+            default: false,
+        },
+        address: {
+            address: {type: String, default: ''},
+            city: {type: String, default: ''},
+            postalCode: {type: String, default: ''},
+            phoneNumber: {type: String, default: ''},
+        },
+        adOptions: {
+            frequency: {type: String, default: '5 min'},
+            showAds: {type: Boolean, default: true}
+        },
+        isConnected: {type: Boolean, default: false}
     },
-    email: {
-      type: String,
-      required: true,
-      unique: true,
-    },
-    password: {
-      type: String,
-      required: true,
-    },
-    isAdmin: {
-      type: Boolean,
-      required: true,
-      default: false,
-    },
-    hasPaidOrders: {
-      type: Boolean,
-      required: true,
-      default: false,
-    },
-    hasOrders: {
-      type: Boolean,
-      required: true,
-      default: false,
-    },
-    address: {
-      address: { type: String, default: '' },
-      city: { type: String, default: '' },
-      postalCode: { type: String, default: '' },
-      phoneNumber: { type: String, default: '' },
-    },
-      adOptions: {
-          frequency: {type: String, default: '5 min'},
-          showAds: {type: Boolean, default: true}
-      }
-  },
-  {
-    timestamps: true,
-  }
+    {
+        timestamps: true,
+    }
 )
 
 userSchema.methods.matchPassword = async function (enteredPassword) {
-  return await bcrypt.compare(enteredPassword, this.password)
+    return await bcrypt.compare(enteredPassword, this.password)
 }
 
 userSchema.pre('save', async function (next) {
-  if (!this.isModified('password')) {
-    next()
-  }
+    if (!this.isModified('password')) {
+        next()
+    }
 
-  const salt = await bcrypt.genSalt(10)
-  this.password = await bcrypt.hash(this.password, salt)
+    const salt = await bcrypt.genSalt(10)
+    this.password = await bcrypt.hash(this.password, salt)
 })
 
 const User = mongoose.model('User', userSchema)

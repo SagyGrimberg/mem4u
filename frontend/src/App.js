@@ -18,9 +18,11 @@ import OrdersListScreen from './screens/OrdersListScreen'
 import UsersListScreen from './screens/UsersListScreen'
 import UserEditScreen from './screens/UserEditScreen'
 import ProductEditScreen from './screens/ProductEditScreen'
+import AdWizard from "./screens/adWizard";
 import Ad from './components/Ad'
 import {useDispatch} from "react-redux";
 import {initEventListening} from "./actions/socketIoActions";
+import AdManagementScreen from "./screens/adManagementScreen";
 
 const App = () => {
     const dispatch = useDispatch();
@@ -42,6 +44,9 @@ const App = () => {
                         <Route path='/cart/:id?' component={CartScreen}/>
                         <Route path='/admin/orders' component={OrdersListScreen}/>
                         <Route path='/admin/users' component={UsersListScreen}/>
+                        <Route path='/admin/ads' component={AdManagementScreen}/>
+                        <Route path='/admin/ad/:id/edit' component={AdWizard}/>
+
                         <Route
                             path='/admin/products/:pagenumber'
                             component={ProductsListScreen}

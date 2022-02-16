@@ -18,6 +18,7 @@ const UserEditScreen = ({ match, history }) => {
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [isAdmin, setIsAdmin] = useState(false)
+  const [frequency, setFrequency] = useState('5 min')
 
   const dispatch = useDispatch()
 
@@ -59,6 +60,7 @@ const UserEditScreen = ({ match, history }) => {
         setName(user.name)
         setEmail(user.email)
         setIsAdmin(user.isAdmin)
+        setFrequency(user.adOptions.frequency)
       }
     }
   }, [userInfo, dispatch, history, success, user, userId])
@@ -72,6 +74,7 @@ const UserEditScreen = ({ match, history }) => {
         name,
         email,
         isAdmin,
+        frequency: frequency
       })
     )
   }
@@ -150,6 +153,7 @@ const UserEditScreen = ({ match, history }) => {
                         onChange={(e) => setIsAdmin(e.target.checked)}
                       ></Form.Check>
                     </Form.Group>
+
 
                     <Button
                       className='btn-brand btn-block mt-4_5'
@@ -352,7 +356,15 @@ const UserEditScreen = ({ match, history }) => {
                     onChange={(e) => setIsAdmin(e.target.checked)}
                   ></Form.Check>
                 </Form.Group>
-
+                <Form.Group controlId='frequency'>
+                  <Form.Label>תדירות מודעות</Form.Label>
+                  <Form.Control
+                      type=''
+                      label='תדירות באנגלית לדוג 5 min'
+                      value={frequency}
+                      onChange={(e) => setFrequency(e.target.value)}
+                  ></Form.Control>
+                </Form.Group>
                 <Button className='btn-brand btn-block mt-4_5' type='submit'>
                   עדכון
                 </Button>

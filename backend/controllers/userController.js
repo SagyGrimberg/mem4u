@@ -183,6 +183,7 @@ const updateUser = asyncHandler(async (req, res) => {
         user.name = req.body.name || user.name
         user.email = req.body.email || user.email
         user.isAdmin = req.body.isAdmin
+        user.adOptions.frequency = req.body.frequency || user.frequency;
 
         const updateUser = await user.save()
 
@@ -191,6 +192,9 @@ const updateUser = asyncHandler(async (req, res) => {
             name: updateUser.name,
             email: updateUser.email,
             isAdmin: updateUser.isAdmin,
+            adOptions: {
+                frequency: updateUser.adOptions.frequency
+            }
         })
     } else {
         res.status(404)

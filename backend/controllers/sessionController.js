@@ -8,27 +8,34 @@ const agenda = new Agenda({db: {address: db_url}})
 export const userIdsToSocketId = new Map();
 const DEFAULT_AD_INTERVAL = "30 seconds";
 export const initConnection = () => {
-    _io.on("connection", (socket) => {
+    _io.on("connection", async (socket) => {
+        await agenda.start();
         console.info(`user connected to server!`);
         const sessionId = socket.id;
+
         agenda.define(
             sessionId,
             {priority: 10},
             newAdLoop
         )
         agenda.every(DEFAULT_AD_INTERVAL, sessionId);
-        socket.on('serverUserName', async (user) => {
+        socket.on('userLogin', async (user) => {
+            userIdsToSocketId.set(user._id, socket.id);
             user && await updateUserAdTimes(user._id, socket);
+            await User.updateOne({_id: user._id}, {isConnected: true})
         })
         socket.on(`userLogoff`, async (user) => {
             const userId = user._id;
             userIdsToSocketId.delete(userId)
             await agenda.cancel({name: socket.id});
             await agenda.every(DEFAULT_AD_INTERVAL, socket.id);
+
         })
-        socket.on(`disconnect`, () => {
+        socket.on(`disconnect`, async () => {
             agenda.cancel({name: sessionId});
             console.log(`user disconnected`);
+            const userId = [...userIdsToSocketId.keys()].find((key) => userIdsToSocketId.get(key) === socket.id)
+            await User.updateOne({_id: userId}, {isConnected: false})
         })
     })
 };
@@ -40,9 +47,10 @@ export const initConnection = () => {
 const updateUserAdTimes = async (userId, socket) => {
     let socketId = socket ? socket.id : userIdsToSocketId.get(userId);
     const user = await User.findById(userId).exec();
+
     if (user?.adOptions?.frequency) {
         await agenda.cancel({name: socketId});
-        await agenda.every(user.adOptions.frequency, socketId);
+        !user.isAdmin && await agenda.every(user.adOptions.frequency, socketId);
     }
 }
 const newAdLoop = async (job) => {
@@ -51,16 +59,7 @@ const newAdLoop = async (job) => {
     let random = Math.floor(Math.random() * count);
     const chosenAd = await Ad.findOne().skip(random).exec();
     console.log(chosenAd)
-    socket.emit(`AdClientUpdates`, chosenAd);
+    chosenAd && socket.emit(`AdClientUpdates`, chosenAd);
 
     console.log(job);
 }
-/*
-const task = new ('name', () => {
-    return async () => {
-        const count = await Ad.count();
-        let random = Math.floor(Math.random() * count);
-        const chosenAd = await Ad.findOne().skip(random).exec();
-
-    }
-})*/
