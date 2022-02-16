@@ -2,12 +2,12 @@ import asyncHandler from "express-async-handler";
 import Ad from "../models/adModel.js";
 
 export const getAds = asyncHandler(async (req, res) => {
-    const ads = await Ad.find({})
+    const ads = await Ad.find({showAd: true})
     res.json(ads);
 })
 export const createAd = asyncHandler(async (req, res) => {
     const ad = new Ad({
-        name: 'מוצר בעריכה',
+        name: 'מודעה חדשה',
         image: '/images/sample.jpg',
     })
     const createdProduct = await ad.save()
