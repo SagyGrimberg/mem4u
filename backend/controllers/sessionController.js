@@ -6,7 +6,7 @@ import User from "../models/userModel.js";
 
 const agenda = new Agenda({db: {address: db_url}})
 export const userIdsToSocketId = new Map();
-const DEFAULT_AD_INTERVAL = "30 seconds";
+const DEFAULT_AD_INTERVAL = "10 minutes";
 export const initConnection = () => {
     _io.on("connection", async (socket) => {
         await agenda.start();
@@ -58,13 +58,13 @@ const updateUserAdTimes = async (userId, socket) => {
 }
 const newAdLoop = async (job) => {
     const socket = await _io.sockets.sockets.get(job.attrs.name);
-    if (job?.attrs?.data.userId && job?.attrs?.data.frequency) {
+    if (job?.attrs?.data?.userId && job?.attrs?.data?.frequency) {
         const user = await User.findById(job.attrs.data.userId).exec();
         user.adOptions.frequency !== job.attrs.data.frequency && await updateUserAdTimes(job?.attrs?.data.userId)
     }
-    const count = await Ad.count();
+    const count = await Ad.count({showAd: true});
     let random = Math.floor(Math.random() * count);
-    const chosenAd = await Ad.findOne().skip(random).exec();
+    const chosenAd = await Ad.findOne({showAd: true}).skip(random).exec();
     console.log(chosenAd)
     chosenAd && socket.emit(`AdClientUpdates`, chosenAd);
 

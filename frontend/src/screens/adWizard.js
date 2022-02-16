@@ -15,6 +15,7 @@ const AdWizard = ({match, history}) => {
 
     const [name, setName] = useState('')
     const [image, setImage] = useState('')
+    const [showAd, setShowAd] = useState(true);
 
     const dispatch = useDispatch()
 
@@ -59,6 +60,7 @@ const AdWizard = ({match, history}) => {
                 _id: adId,
                 name,
                 image,
+                showAd
             })
         )
     }
@@ -181,6 +183,14 @@ const AdWizard = ({match, history}) => {
                                                 ></Form.File>
                                             </>
                                         )}
+                                    </Form.Group>
+                                    <Form.Group controlId='showAd'>
+                                        <Form.Check
+                                            type='checkbox'
+                                            label='הצגת מודעה'
+                                            checked={showAd}
+                                            onChange={(e) => setShowAd(e.target.checked)}
+                                        ></Form.Check>
                                     </Form.Group>
 
                                     <Button className='btn-brand btn-block mt-4_5' type='submit'>
