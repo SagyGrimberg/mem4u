@@ -47,6 +47,9 @@ const Header = () => {
                                     <LinkContainer to='/admin/users'>
                                         <NavDropdown.Item>רשימת משתמשים</NavDropdown.Item>
                                     </LinkContainer>
+                                    <LinkContainer to='/admin/ads'>
+                                        <NavDropdown.Item>ניהול מודעות</NavDropdown.Item>
+                                    </LinkContainer>
                                     <LinkContainer to='/profile'>
                                         <NavDropdown.Item>אזור אישי</NavDropdown.Item>
                                     </LinkContainer>
